@@ -1,10 +1,5 @@
-//
 //  TMP36.cpp
-//  
-//
 //  Created by Blaine Lewis on 1/11/16.
-//
-//
 
 #include "TMP36.h"
 
@@ -24,7 +19,6 @@ TMP36::TMP36(int pin, bool fiveVolts):
     isFive = fiveVolts;
     mVolts = 0;
     rawVal = 0;
-    
     pinMode(tmpPin, INPUT);
 }
 
@@ -32,35 +26,39 @@ TMP36::TMP36(int pin, bool fiveVolts):
 float TMP36::getTemp()
 {
     rawVal = analogRead(tmpPin);
+    delay(1);   // artificial delay to smooth ADC converter noise if switching from a different input.
+    rawVal = analogRead(tmpPin);     //I suppose this could be elsewhere
+
+    
     float temp = 0;
     
     if (isFive) {
-        
         // 5V MATHS 10 bits give us 1024 possible levels of temperature.
-        // each bit change will change 4.9 millivolts.
-        // temp sensor TMP36 outputs 10mV for each degree celsius, calibrated at 750mV at 25C
-        mVolts = 4.883 *rawVal;
+        //5000 millivolts/rawval from 0-1023
+        mVolts = 5000/rawVal;
     }
     else{
         // 3.3V MATHS millivolts
-        // 3.3/1024 == 3.223mV per "tick"
-        mVolts = 3.223 * rawVal;
+        // 3300 millivolts/rawval from 0-1023
+        mVolts = 3300/rawVal;
     }
     
-    // MATHS to convert millevolts to CELSIUS!!
+    // MATHS to convert millivolts to CELSIUS!!
+    //temp sensor TMP36 outputs 10mV for each degree celsius, calibrated at 750mV at 25C
     temp = (mVolts-500)/10;
+    
     return temp;
 }
 
-//retruns Faherenheit given a celsius value.
+//retruns Fahrenheit given a celsius value.
 float TMP36::getFah(float cels)
 {
-    float fah = (cels*1.8)+32;
+    float fah = (cels * 9.0 / 5.0)+32;
     
     return fah;
 }
 
-//gets celsius value from sensor and returns faherenheit value
+//gets celsius value from sensor and returns fahrenheit value
 float TMP36::getFah()
 {
     int cTemp = getTemp();

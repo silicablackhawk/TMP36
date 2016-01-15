@@ -1,24 +1,13 @@
-//
 //  TMP36.h
-//  
-//
 //  Created by Blaine Lewis on 1/11/16.
 
 #ifndef TMP36_h
 #define TMP36_h
 
 
-//these lines apparently import arduino specific code and call like pinMode and "INPUT"
+//these lines import arduino specific code and call like pinMode and "INPUT"
 #if (ARDUINO >= 100)
 #include <Arduino.h>
-
-//unknown purpose as of yet...
-/*
- #else
-#include <WProgram.h>
-#include <pins_arduino.h>
-*/
-
 #endif
 
 
