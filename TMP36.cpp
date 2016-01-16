@@ -32,15 +32,18 @@ float TMP36::getTemp()
     
     float temp = 0;
     
+    //converts rawVal to millivolts
     if (isFive) {
-        // 5V MATHS 10 bits give us 1024 possible levels of temperature.
-        //5000 millivolts/rawval from 0-1023
-        mVolts = 5000/rawVal;
+        // 5V MATHS
+        //(5000mV/1024) gets "tick level" for each bit of feedback from ADC based on 10 bit ADC
+        // multiply that by the rawVal to calculate millivolts
+        mVolts = (5000.0/1024.0)*rawVal;
     }
     else{
-        // 3.3V MATHS millivolts
-        // 3300 millivolts/rawval from 0-1023
-        mVolts = 3300/rawVal;
+        // 3.3V MATHS
+        //(3300mV/1024) gets "tick level" for each bit of feedback from ADC based on 10 bit ADC
+        // multiply that by the rawVal to calculate millivolts
+        mVolts = (3300.0/1024.0)*rawVal;
     }
     
     // MATHS to convert millivolts to CELSIUS!!
